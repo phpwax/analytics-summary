@@ -93,15 +93,12 @@ class GA {
 			$return = $output;
 		}
 		elseif($info['http_code'] == 400) {
-		  echo "400<br>";print_r($output);
 			trigger_error('Badly formatted request to the Google Analytics API; check your profile id is in the format ga:12345, dates are correctly formatted and the dimensions and metrics are correct', E_USER_ERROR);
 		}
 		elseif($info['http_code'] == 401) {
-		  echo "401<br>";print_r($output);		  
 			trigger_error('Unauthorized request to the Google Analytics API', E_USER_ERROR);
 		}
 		else {
-		  echo "unknown<br>";print_r($output);
 			trigger_error("Unknown error when accessing the Google Analytics API, HTTP STATUS {$info['http_code']}", E_USER_ERROR);
 		}
 		return $return;
