@@ -1,0 +1,16 @@
+"analytics" => array(
+  "email"=>"xxx@gmail.com",
+  "password"=> "XXXX",
+  "id"=> "XXXXXX",
+  "tracker_id"=>"UA-XXXXX-X",
+  "summary"=> array(
+    'compare'=>array(
+      array('id'=>'ga:XXXXXX', 'month'=>-1, 'year'=>0, 'interval'=>1),
+      array('id'=>'ga:XXXXXX', 'month'=>-1, 'year'=>-1, 'interval'=>1)
+    ),
+    'summaries'=>array(
+      'visits'=>array('columnname'=>'Total Visits', 'dimensions'=>'ga:date', 'metric'=>'ga:visits', 'sort'=>'-ga:date', 'version'=>2, 'max_results'=>100, 'start_index'=>1, 'processfunction'=>'process_visits'),
+      'mobile'=>array('columnname'=>'Mobile Visits', 'dimensions'=>'ga:operatingSystem', 'metric'=>'ga:visits', 'sort'=>'-ga:visits', 'version'=>2, 'max_results'=>100, 'start_index'=>1, 'segment'=>"gaid::-11", 'processfunction'=>'process_visits')
+    )      
+  )
+),
