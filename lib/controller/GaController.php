@@ -25,14 +25,38 @@ class GaController extends WaxController{
         foreach($this->summary_config['summaries'] as $nm=>$sum){
           $func = $sum['processfunction'];
           $col = $sum['columnname'];
-          $this->results[$col][$k] = $this->$func($this->data($sum, $comp, $this->results));
+          //this so you can limit the query to a single comparision
+          if((isset($sum['single_side']) && $sum['single_side'] == $k) || !isset($sum['single_side'])){            
+            $res = $this->$func($this->data($sum, $comp), $col, $this->results, $comp);          
+            $this->results[$res['col']][$k] = $res['data'];
+          }else $this->results[$col][$k] = 0;
         }        
       }
     }
+    
   }
   
-  protected function process_visits($raw){    
-    return $this->flat_results($raw, 'ga:visits');
+  protected function process_keywords($raw, $nm, $other_results, $setup){    
+    $res = array();
+    foreach($raw as $i=>$vals) if($i != "(not set)") $res[$i] = array_shift($vals);
+    return array('col'=>$nm, 'data'=>$res);
+  }
+  
+  protected function process_sources($raw, $nm, $other_results, $setup){
+    $name = $nm ." ". array_shift(array_keys($raw));
+    $val = array_shift(array_shift($raw));
+    return array('data'=>$val, 'col'=>$name);
+  }
+  
+  protected function process_goal($raw, $nm, $other_results, $setup){
+    $val = array_shift($raw);
+    array_unshift($raw, $val);    
+    $col = array_shift(array_keys($val));
+    return array('data'=>$this->flat_results($raw, $col), 'col'=>$nm);
+  }
+  
+  protected function process_visits($raw, $nm, $other_results, $setup){    
+    return array('data'=>$this->flat_results($raw, 'ga:visits'), 'col'=>$nm);
   }
 
   protected function flat_results($data, $col){
@@ -40,6 +64,8 @@ class GaController extends WaxController{
     foreach($data as $i=>$v) $res += $v[$col];
     return $res;
   }
+  
+  
   
   protected function data($setup, $comp){
     return $this->api->data($comp['id'], $setup['dimensions'], $setup['metric'], $setup['sort'], 
