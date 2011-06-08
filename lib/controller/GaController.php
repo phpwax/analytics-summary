@@ -5,6 +5,7 @@ class GaController extends WaxController{
   public $config = array();
   public $summary_config = array();
   public $compare = array();
+  public $times = array();
   public $result = array();
   public $use_plugin = "ga";
 	public $use_layout = "ga";
@@ -20,7 +21,7 @@ class GaController extends WaxController{
       $this->compare = $this->summary_config['compare'];
       //go over each compare and setup the data
       foreach($this->compare as $k=>$comp){
-        $comp = $this->compare[$k] = $this->times($comp);
+        $comp = $this->compare[$k] = $this->times($comp, $k);
         //get the data and process it for each
         foreach($this->summary_config['summaries'] as $nm=>$sum){
           $func = $sum['processfunction'];
@@ -73,20 +74,26 @@ class GaController extends WaxController{
                             $setup['start_index'], $setup['segment'], $setup['version']);
   }
 
-  protected function times($comp){
-    $sm = date("m")+$comp['month'];
+  protected function times($comp, $i){
+    $posted_m = Request::param("month");  
+    $posted_y = Request::param("year");
+    
+    if(!$sm = $posted_m[$i]) $sm = date("m")+$comp['month'];
     $sd = 1;
-    $sy = date("Y")+$comp['year'];
+    if(!$sy = $posted_y[$i]) $sy = date("Y")+$comp['year'];
     $comp['times']['start']['ts'] = mktime(0,0,0, $sm, $sd, $sy);
     $comp['times']['start']['ymd'] = date("Y-m-d", $comp['times']['start']['ts']);
     $comp['times']['start']['eng'] = date("F Y", $comp['times']['start']['ts']);
     
     $em = $sm+$comp['interval'];
     $ed = 0;
-    $ey = date("Y")+$comp['year'];
+    $ey = $sy;
     $comp['times']['end']['ts'] = mktime(0,0,0, $em, $ed, $ey);
     $comp['times']['end']['ymd'] = date("Y-m-d", $comp['times']['end']['ts']);
     $comp['times']['end']['eng'] = date("F Y", $comp['times']['end']['ts']);
+    
+    $this->times[$i]['month'] = $sm;
+    $this->times[$i]['year'] = $sy;
     
     return $comp;
   }

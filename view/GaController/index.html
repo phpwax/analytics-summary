@@ -1,4 +1,42 @@
 <div class='box_outer clearfix'>
+  <form action="" method="get">
+    <input type='hidden' name='open_says' value='me'>
+    <div class='clearfix'>
+      <label for="a_month">Month A</label>
+      <select name='month[0]' id="a_month">
+        <?for($m=1; $m <=12; $m++ ):?>
+        <option value="<?=(($m < 10)?"0":"")?><?=$m?>"<?if($times[0]['month'] == $m):?> selected="selected"<?endif?>><?=date("F", mktime(0,0,0, $m, 1, 1971))?></option>
+        <?endfor?>
+      </select>
+    </div>
+    <div class='clearfix'>
+      <label for="a_year">Year A</label>
+      <select name='year[0]' id="a_year">
+        <?for($m=5; $m >= 0; $m--):?>
+        <?$y = date("Y")-$m;?>
+        <option value="<?=$y?>"<?if($times[0]['year'] == $y):?> selected="selected"<?endif?>><?=$y?></option>
+        <?endfor?>
+      </select>
+    </div>
+    <div class='clearfix'>
+      <label for="b_month">Month B</label>
+      <select name='month[1]' id="b_month">
+        <?for($m=1; $m <=12; $m++ ):?>
+        <option value="<?=(($m < 10)?"0":"")?><?=$m?>"<?if($times[1]['month'] == $m):?> selected="selected"<?endif?>><?=date("F", mktime(0,0,0, $m, 1, 1971))?></option>
+        <?endfor?>
+      </select>
+    </div>
+    <div class='clearfix'>
+      <label for="b_year">Year B</label>
+      <select name='year[1]' id="b_year">
+        <?for($m=5; $m >= 0; $m--):?>
+        <?$y = date("Y")-$m;?>
+        <option value="<?=$y?>"<?if($times[1]['year'] == $y):?> selected="selected"<?endif?>><?=$y?></option>
+        <?endfor?>
+      </select>
+    </div>
+    <input type='submit' name='update' value='update'>
+  </form>
   <div class='box_inner clearfix'>
     <table style='width:90%'>
       <tr>
@@ -6,24 +44,37 @@
         <?foreach(array_reverse($compare) as $i=>$comp):?>
         <th><?=$comp['times']['start']['eng']?></th>
         <?endforeach?>
+        <?if($summary_config['change']):?><th>Change</th><?endif?>
       </tr>
-      <?foreach($results as $k => $res):?>        
+      <?foreach($results as $k => $res):?>
         <tr>
           <th><?=$k?></th>
           <?foreach(array_reverse($res) as $val):?>
-          <td>
-          <?if(is_array($val)):?>
-            <table class='sub'>
-              <?foreach($val as $word=>$v):?>
-              <tr><th><small><?=$word?></small></th><td><small><?=$v?></small></td></tr>
-              <?endforeach?>
-            </table>
-          <?elseif(is_float($val)):?><?=number_format($val,2)?><?elseif(is_numeric($val)):?><?=number_format($val,0)?><?else:?><?=$val?><?endif?>
-          </td>
+            <td>
+            <?if(is_array($val)):?>
+              <table class='sub'>
+                <?foreach($val as $word=>$v):?>
+                <tr><th><small><?=$word?></small></th><td><small><?=$v?></small></td></tr>
+                <?endforeach?>
+              </table>
+            <?elseif(is_float($val)):?><?=number_format($val,2)?><?elseif(is_numeric($val)):?><?=number_format($val,0)?><?else:?><?=$val?><?endif?>
+            </td>
           <?endforeach?>
+          <?if($summary_config['change'] && $summary_config['summaries'][$k] && $summary_config['summaries'][$k]['change']):?>
+          <td>
+            <?
+              $first = array_pop($res);
+              $second = array_pop($res);
+              $change = (($second / $first) * 100) - 100;
+            ?>
+            <?=number_format($change,2)." %"?>
+          </td>
+          <?elseif($summary_config['change']):?>
+          <td></td>
+          <?endif?>
         </tr>
       <?endforeach?>
-      
+
     </table>
   </div>
 </div>
