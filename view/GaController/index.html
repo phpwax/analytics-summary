@@ -38,11 +38,13 @@
     <input type='submit' name='update' value='update'>
   </form>
   <div class='box_inner clearfix'>
-    <table style='width:90%'>
+    <p><a href="#" class='clip'>Copy to clipboard</a></p>
+    
+    <table style='width:90%; border:1px solid #ededed;'>
       <tr>
         <th></th>
         <?foreach(array_reverse($compare) as $i=>$comp):?>
-        <th><?=$comp['times']['start']['eng']?></th>
+        <th class='padding:2px'><?=$comp['times']['start']['eng']?></th>
         <?endforeach?>
         <?if($summary_config['change']):?><th>Change</th><?endif?>
       </tr>
@@ -50,9 +52,9 @@
         <tr>
           <th><?=$k?></th>
           <?foreach(array_reverse($res) as $val):?>
-            <td>
+            <td class='padding:2px'>
             <?if(is_array($val)):?>
-              <table class='sub'>
+              <table class='sub' border="0">
                 <?foreach($val as $word=>$v):?>
                 <tr><th><small><?=$word?></small></th><td><small><?=$v?></small></td></tr>
                 <?endforeach?>
@@ -61,7 +63,7 @@
             </td>
           <?endforeach?>
           <?if($summary_config['change'] && $summary_config['summaries'][$k] && $summary_config['summaries'][$k]['change']):?>
-          <td>
+          <td class='padding:2px'>
             <?
               $first = array_pop($res);
               $second = array_pop($res);
