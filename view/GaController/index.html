@@ -1,0 +1,21 @@
+<div class='box_outer clearfix'>
+  <div class='box_inner clearfix'>
+    <table style='width:90%'>
+      <tr>
+        <th></th>
+        <?foreach(array_reverse($compare) as $i=>$comp):?>
+        <th><?=$comp['times']['start']['eng']?></th>
+        <?endforeach?>
+      </tr>
+      <?foreach($results as $k => $res):?>
+      <tr>
+        <th><?=$k?></th>
+        <?foreach(array_reverse($res) as $val):?>
+        <td><?if(is_float($val)):?><?=number_format($val,2)?><?elseif(is_numeric($val)):?><?=number_format($val,0)?><?else:?><?=$val?><?endif?></td>
+        <?endforeach?>
+      </tr>
+      <?endforeach?>
+      
+    </table>
+  </div>
+</div>
