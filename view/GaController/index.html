@@ -39,31 +39,33 @@
   </form>
   <div class='box_inner clearfix'>
     <p><a href="#" class='clip'>Copy to clipboard</a></p>
-    
-    <table style='width:90%; border:1px solid #ededed;'>
+    <p><br><br></p>
+    <table style='width:90%; border:1px solid #929292;'>
       <tr>
-        <th></th>
+        <th style="border-bottom:1px solid #929292;font-weight:bold; vertical-alignment:middle;border-right:1px solid #929292;"></th>
         <?foreach(array_reverse($compare) as $i=>$comp):?>
-        <th class='padding:2px'><?=$comp['times']['start']['eng']?></th>
+        <th style='padding:6px 4px; border-bottom:1px solid #929292;font-weight:bold; vertical-alignment:middle;;border-right:1px solid #929292;text-align:left' valign="middle" align="left"><?=$comp['times']['start']['eng']?></th>
         <?endforeach?>
-        <?if($summary_config['change']):?><th>Change</th><?endif?>
+
+        <?if($summary_config['change']):?><th style="padding:6px 4px;border-bottom:1px solid #929292;font-weight:bold; vertical-alignment:middle;text-align:left" valign="middle" align="left">Change</th><?endif?>
       </tr>
       <?foreach($results as $k => $res):?>
         <tr>
-          <th><?=$k?></th>
+          <th style='padding:6px 4px; font-weight:bold; vertical-alignment:top;border-right:1px solid #929292;border-right:1px solid #929292;text-align:left' align="left"><?=$k?></th>
           <?foreach(array_reverse($res) as $val):?>
-            <td class='padding:2px'>
+            <td style='padding:6px 4px;border-right:1px solid #929292;text-align:left' align="left">
             <?if(is_array($val)):?>
               <table class='sub' border="0">
                 <?foreach($val as $word=>$v):?>
-                <tr><th><small><?=$word?></small></th><td><small><?=$v?></small></td></tr>
+                <tr><th style="text-align:left;" align="left"><small><?=$word?></small></th><td style="text-align:left" align="left"><small><?=$v?></small></td></tr>
                 <?endforeach?>
               </table>
             <?elseif(is_float($val)):?><?=number_format($val,2)?><?elseif(is_numeric($val)):?><?=number_format($val,0)?><?else:?><?=$val?><?endif?>
             </td>
           <?endforeach?>
+
           <?if($summary_config['change'] && $summary_config['summaries'][$k] && $summary_config['summaries'][$k]['change']):?>
-          <td class='padding:2px'>
+          <td class='padding:6px 4px;text-align:left' align="left">
             <?
               $first = array_pop($res);
               $second = array_pop($res);
@@ -78,5 +80,6 @@
       <?endforeach?>
 
     </table>
+     <p><br><br></p>
   </div>
 </div>
