@@ -1,6 +1,15 @@
 <div class='box_outer clearfix'>
   <form action="" method="get">
     <input type='hidden' name='open_says' value='me'>
+    
+    <div class='clearfix'>
+      <label for="a_account">Account A</label>
+      <select name='account[0]' id="a_account">
+        <?foreach($summary_config['compare'] as $r):?>
+        <option value="<?=$r['id']?>"<?if($times[0]['account'] == $r['id']):?> selected="selected"<?endif?>><?=$r['id']?> (<?=$r['label']?>)</option>
+        <?endforeach?>
+      </select>
+    </div>
     <div class='clearfix'>
       <label for="a_month">Month A</label>
       <select name='month[0]' id="a_month">
@@ -16,6 +25,15 @@
         <?$y = date("Y")-$m;?>
         <option value="<?=$y?>"<?if($times[0]['year'] == $y):?> selected="selected"<?endif?>><?=$y?></option>
         <?endfor?>
+      </select>
+    </div>
+    
+    <div class='clearfix'>
+      <label for="a_account">Account B</label>
+      <select name='account[1]' id="b_account">
+        <?foreach($summary_config['compare'] as $r):?>
+        <option value="<?=$r['id']?>"<?if($times[1]['account'] == $r['id']):?> selected="selected"<?endif?>><?=$r['id']?> (<?=$r['label']?>)</option>
+        <?endforeach?>
       </select>
     </div>
     <div class='clearfix'>
@@ -35,15 +53,20 @@
         <?endfor?>
       </select>
     </div>
+    
+    
+    
     <input type='submit' name='update' value='update'>
   </form>
+  
+<?if(Request::param('account')):?>
   <div class='box_inner clearfix'>
     <p><br><br></p>
     <table style='width:90%; border:1px solid #929292;'>
       <tr>
         <th style="border-bottom:1px solid #929292;font-weight:bold; vertical-alignment:middle;border-right:1px solid #929292;"></th>
         <?foreach(array_reverse($compare) as $i=>$comp):?>
-        <th style='padding:6px 4px; border-bottom:1px solid #929292;font-weight:bold; vertical-alignment:middle;;border-right:1px solid #929292;text-align:left' valign="middle" align="left"><?=$comp['times']['start']['eng']?></th>
+        <th style='padding:6px 4px; border-bottom:1px solid #929292;font-weight:bold; vertical-alignment:middle;;border-right:1px solid #929292;text-align:left' valign="middle" align="left"><?=$comp['times']['start']['eng']?> <small>(<?=$accounts[$i]?>)</small></th>
         <?endforeach?>
 
         <?if($summary_config['change']):?><th style="padding:6px 4px;border-bottom:1px solid #929292;font-weight:bold; vertical-alignment:middle;text-align:left" valign="middle" align="left">Change</th><?endif?>
@@ -81,4 +104,5 @@
     </table>
      <p><br><br></p>
   </div>
+  <?endif?>
 </div>
