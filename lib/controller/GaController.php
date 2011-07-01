@@ -12,6 +12,7 @@ class GaController extends WaxController{
 
   public function controller_global(){
     set_time_limit(0);
+    WXRoutingException::$redirect_on_error = WaxException::$redirect_on_error = false;
   }
   public function index(){
     $this->api = new GA;
